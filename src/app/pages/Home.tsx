@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { CountdownTimer } from '../components/CountdownTimer';
-import { SimpleMenuBar } from '../components/SimpleMenuBar';
+import { Navbar } from '../components/Navbar';
 import { 
   Calendar,
   MapPin,
@@ -45,6 +45,10 @@ import logo from '../assets/logo.png';
 import interviewVideo from '../assets/interview.mp4';
 import beatVideo from '../assets/beat.mp4';
 import concertVideo from '../assets/concert.mp4';
+
+import influenceurVideo from '../assets/influenceur.mp4';
+import blagueVideo from '../assets/blague.mp4';
+import shootingVideo from '../assets/Tiens_tiens…____VANO_BABY_Officiel,_le_grand_Azétò_Gbèdé,_aperçu_hier_nuit_au_FInAB_Togo_Day._Au_temps_pour_lui,_au_temps_pour_nous_hein_.__Tu_veu.mp4';
 
 // Données FAQ
 const FAQ_DATA = [
@@ -90,8 +94,10 @@ export default function Home() {
   const [showNotification, setShowNotification] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   // États pour la billetterie
-  
+  const [showHypeModal, setShowHypeModal] = useState(false);
   const ticketsRef = useRef(null);
 const isTicketsInView = useInView(ticketsRef, { 
   once: true, 
@@ -199,7 +205,7 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
   transition={{ delay: 2, duration: 0.5 }}
 >
   <Ticket className="w-4 h-4" />
-  <span>Prendre mon billet</span>
+  <span>Let's Go 🔥</span>
 </motion.button>
 
 {/* Bouton menu mobile (hamburger) */}
@@ -266,7 +272,7 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
         <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-x-hidden">
           <Toaster theme="dark" richColors />
           <LiveNotification message={currentNotification} show={showNotification} />
-                           <SimpleMenuBar />.
+                           <Navbar />.
       {/* ==================== SECTION HERO ==================== */}
 <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
   {/* Image de fond plus sombre */}
@@ -318,6 +324,8 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
       </motion.h1>
 
       {/* Nom artiste */}
+
+      
       <motion.div
         className="flex items-center justify-center gap-3 mb-8"
         initial={{ opacity: 0 }}
@@ -390,13 +398,13 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
   </motion.div>
 </section>
 
-   {/* ==================== SECTION ARTISTE (MODERNISÉE) ==================== */}
+  {/* ==================== SECTION ARTISTE (MODERNISÉE) ==================== */}
 <section id="artiste" className="relative py-20 md:py-32 overflow-hidden bg-[#0B0E16]">
   <FloatingParticles />
 
   <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24 relative z-10">
     <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-      {/* Colonne image : carrousel */}
+      {/* Colonne image : carrousel cliquable */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -407,19 +415,24 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
       >
         <div className="relative rounded-3xl overflow-hidden shadow-2xl">
           <AnimatePresence mode="wait">
-            <motion.img
+            <motion.div
               key={currentImageIndex}
-              src={artistImages[currentImageIndex]}
-              alt={`Vano Baby ${currentImageIndex + 1}`}
-              className="w-full h-[500px] object-cover"
+              className="cursor-pointer"
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            />
+              onClick={() => setSelectedImage(artistImages[currentImageIndex])}
+            >
+              <img
+                src={artistImages[currentImageIndex]}
+                alt={`Vano Baby ${currentImageIndex + 1}`}
+                className="w-full h-[500px] object-cover"
+              />
+            </motion.div>
           </AnimatePresence>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
           <motion.div
             className="absolute bottom-6 left-6 px-4 py-2 rounded-full z-10"
             style={{
@@ -464,7 +477,7 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
         </div>
       </motion.div>
 
-      {/* Colonne texte */}
+      {/* Colonne texte (inchangée) */}
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -531,7 +544,7 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
           whileTap={{ scale: 0.95 }}
           onClick={() => document.getElementById("billetterie")?.scrollIntoView({ behavior: "smooth" })}
         >
-          Je veux ma place
+          10 ans une seule nuit
           <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
             →
           </motion.span>
@@ -647,7 +660,7 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
   </div>
 </section>
 
-    {/* ==================== SECTION HYPE ==================== */}
+  {/* ==================== SECTION HYPE ==================== */}
 <section id="hype" className="relative py-20 px-4 overflow-hidden">
   <div className="container mx-auto max-w-7xl">
     <motion.div
@@ -695,12 +708,12 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
       ))}
     </div>
 
-    {/* Grille de vidéos */}
+    {/* Grille de vidéos existantes */}
     <div className="grid md:grid-cols-3 gap-6">
       {[
         { src: interviewVideo, title: "Interview Exclusive", desc: "Vano Baby se confie sur 10 ans de carrière" },
         { src: beatVideo, title: "Beat Making", desc: "Dans les coulisses de la création musicale" },
-        { src: concertVideo, title: "Live Concert", desc: "Les meilleurs moments du concert anniversaire" }
+        { src: concertVideo, title: "Concert Live", desc: "Les meilleurs moments du concert anniversaire" }
       ].map((video, index) => (
         <motion.div
           key={index}
@@ -746,6 +759,28 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
         </motion.div>
       ))}
     </div>
+
+    {/* Bouton "La hype du gang" */}
+    <motion.div
+      className="flex justify-center mt-12"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.6 }}
+    >
+      <motion.button
+        onClick={() => setShowHypeModal(true)}
+        className="px-8 py-4 bg-gradient-to-r from-[#B50C00] to-red-600 rounded-full font-bold text-lg shadow-xl flex items-center gap-2 group"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <TrendingUp className="w-5 h-5" />
+        <span>Une nuit se prepare 🔥</span>
+        <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+          →
+        </motion.span>
+      </motion.button>
+    </motion.div>
   </div>
 </section>
 
@@ -1108,6 +1143,109 @@ const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string 
             {selectedVideo.title === "Live Concert" && "Extrait du concert exceptionnel qui a réuni plus de 15 000 fans au Majestic de Wologuèdè."}
           </p>
         </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
+{/* Modale "La hype du gang" */}
+<AnimatePresence>
+  {showHypeModal && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-lg flex items-center justify-center p-4"
+      onClick={() => setShowHypeModal(false)}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="relative w-full max-w-5xl bg-black/80 rounded-2xl overflow-hidden p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={() => setShowHypeModal(false)}
+          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B50C00] transition-all"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <h3 className="text-2xl font-bold text-white mb-6 text-center">La hype du gang</h3>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { src: influenceurVideo, title: "Influenceur", desc: "Vano Baby rencontre les influenceurs" },
+            { src: blagueVideo, title: "Blague", desc: "Les coulisses humoristiques" },
+            { src: shootingVideo, title: "le Gang", desc: "Le gang dans les coulisses" },
+          ].map((video, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="relative rounded-xl overflow-hidden h-64 group cursor-pointer"
+              onClick={() => {
+                setSelectedVideo({ src: video.src, title: video.title });
+                setShowHypeModal(false);
+              }}
+            >
+              <video
+                src={video.src}
+                className="w-full h-full object-cover"
+                muted
+                loop
+                playsInline
+                onMouseEnter={(e) => e.currentTarget.play()}
+                onMouseLeave={(e) => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <h3 className="text-white font-bold text-lg">{video.title}</h3>
+                <p className="text-gray-300 text-sm">{video.desc}</p>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="w-12 h-12 rounded-full bg-[#B50C00] flex items-center justify-center">
+                  <Play className="w-6 h-6 text-white ml-1" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
+{/* Modal d'image */}
+<AnimatePresence>
+  {selectedImage && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-lg flex items-center justify-center p-4"
+      onClick={() => setSelectedImage(null)}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="relative max-w-5xl max-h-[90vh] overflow-hidden rounded-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={() => setSelectedImage(null)}
+          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#B50C00] transition-all"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <img
+          src={selectedImage}
+          alt="Vano Baby"
+          className="w-full h-full object-contain max-h-[85vh]"
+        />
       </motion.div>
     </motion.div>
   )}
